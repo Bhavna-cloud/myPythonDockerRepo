@@ -14,7 +14,7 @@ jobs:
       with:
         status: starting
         channel: '#all-mycompany'
-        message: Starting Docker Build image...
+        text: 'Starting Docker Build image...'  # Ensure the message is provided here
       if: always()
     - uses: actions/checkout@v3
     - name: Build Docker image
@@ -25,4 +25,5 @@ jobs:
         channel: '#all-mycompany'
         status: ${{ job.status }}
         steps: ${{ toJson(steps) }}
+        text: 'Docker Build Finished with status: ${{ job.status }}'  # Provide a message here as well
       if: always()
