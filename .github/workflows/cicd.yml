@@ -10,7 +10,7 @@ jobs:
     env:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     steps:
-    - uses: actions/slack@v2
+    - uses: slackapi/slack-github-action@v1
       with:
         status: starting
         channel: '#all-mycompany'
@@ -20,9 +20,9 @@ jobs:
     - name: Build Docker image
       run: |
         docker build -t my-docker-repo .
-    - uses: act10ns/slack@v2
+    - uses: slackapi/slack-github-action@v1
       with:
         channel: '#all-mycompany'
         status: ${{ job.status }}
         steps: ${{ toJson(steps) }}
-      if: always()        
+      if: always()
