@@ -10,20 +10,26 @@ jobs:
     env:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     steps:
-    - uses: slackapi/slack-github-action@v1
+    - name: Notify Slack - Build started
+      uses: slackapi/slack-github-action@v1
       with:
         status: starting
         channel: '#all-mycompany'
-        text: 'Starting Docker Build image...'  # Ensure the message is provided here
+        text: 'Starting Docker Build image...'
       if: always()
+
     - uses: actions/checkout@v3
+    
     - name: Build Docker image
       run: |
         docker build -t my-docker-repo .
-    - uses: slackapi/slack-github-action@v1
+
+    - name: Notify Slack - Build finished
+      uses: slackapi/slack-github-action@v1
       with:
         channel: '#all-mycompany'
         status: ${{ job.status }}
-        steps: ${{ toJson(steps) }}
-        text: 'Docker Build Finished with status: ${{ job.status }}'  # Provide a message here as well
+        text: |
+          Docker Build finished with status: ${{ job.status }}
+          View details: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
       if: always()
